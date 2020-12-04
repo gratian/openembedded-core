@@ -1,0 +1,12 @@
+diff -ur a/common/signal.c b/common/signal.c
+--- a/common/signal.c	2020-12-01 17:38:02.630565591 -0600
++++ b/common/signal.c	2020-12-01 17:39:02.588095053 -0600
+@@ -88,7 +88,7 @@
+   /* Note that we can't use strsignal(), because it is not
+      reentrant. */
+ #if HAVE_DECL_SYS_SIGLIST && defined(NSIG)
+-  return (signum >= 0 && signum < NSIG) ? sys_siglist[signum] : "?";
++  return (signum >= 0 && signum < NSIG) ? strsignal(signum) : "?";
+ #else
+   return NULL;
+ #endif
