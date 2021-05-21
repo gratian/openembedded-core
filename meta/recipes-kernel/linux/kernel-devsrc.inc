@@ -1,7 +1,10 @@
 SUMMARY = "Linux kernel Development Source"
+SUMMARY_${PN}-python-scripts = "Linux kernel Development Source (python scripts)"
 DESCRIPTION = "Development source linux kernel. When built, this recipe packages the \
 source of the selected kernel and makes it available for full kernel \
 development or external module builds"
+
+PACKAGES =+ "${PN}-python-scripts"
 
 SECTION = "kernel"
 
@@ -270,9 +273,16 @@ do_install[lockfiles] = "${TMPDIR}/kernel-scripts.lock"
 
 FILES_${PN} = "${KERNEL_BUILD_ROOT} ${KERNEL_SRC_PATH}"
 FILES_${PN}-dbg += "${KERNEL_BUILD_ROOT}*/build/scripts/*/.debug/*"
+FILES_${PN}-python-scripts = "\
+    ${KERNEL_BUILD_ROOT}*/build/scripts/*.py \
+    ${KERNEL_BUILD_ROOT}*/build/scripts/gdb/* \
+    ${KERNEL_BUILD_ROOT}*/build/scripts/tracing/*.py \
+"
 
-RDEPENDS_${PN} = "bc python3 flex bison ${TCLIBC}-utils"
+RDEPENDS_${PN} = "bc flex bison ${TCLIBC}-utils"
 # 4.15+ needs these next two RDEPENDS
 RDEPENDS_${PN} += "openssl-dev util-linux"
 # and x86 needs a bit more for 4.15+
 RDEPENDS_${PN} += "${@bb.utils.contains('ARCH', 'x86', 'elfutils', '', d)}"
+
+RDEPENDS_${PN}-python-scripts = "python3"
